@@ -9530,6 +9530,8 @@ module.exports = __webpack_require__(19);
 "use strict";
 
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 var _react = __webpack_require__(81);
 
 var _react2 = _interopRequireDefault(_react);
@@ -9540,86 +9542,229 @@ var _reactDom2 = _interopRequireDefault(_reactDom);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 // JSX 的基本语法规则：
 // 遇到 HTML 标签（以 < 开头），就用 HTML 规则解析；
 // 遇到代码块（以 { 开头），就用 JavaScript 规则解析。
 var users = [{ name: 'Cloud', age: 28 }, { name: 'Cid', age: 32 }, { name: 'Aeris', age: 22 }];
-
+// ReactDOM.render把VirtualDOM应用到DOM
 _reactDom2.default.render(_react2.default.createElement(
-    'div',
-    null,
-    users.map(function (user, i) {
-        return _react2.default.createElement(
-            'div',
-            { key: i },
-            i,
-            ': Hello, ',
-            user.name,
-            ' / ',
-            user.age,
-            ' !'
-        );
-    })
+	'div',
+	null,
+	users.map(function (user, i) {
+		return _react2.default.createElement(
+			'div',
+			{ key: i },
+			i,
+			': Hello, ',
+			user.name,
+			' / ',
+			user.age,
+			' !'
+		);
+	})
 ), document.getElementById('app1'));
 
 var arr = [_react2.default.createElement(
-    'h3',
-    null,
-    'Hello world!'
+	'h3',
+	null,
+	'Hello world!'
 ), _react2.default.createElement(
-    'h3',
-    null,
-    'React is awesome'
+	'h3',
+	null,
+	'React is awesome'
 )];
 _reactDom2.default.render(_react2.default.createElement(
-    'div',
-    null,
-    arr
+	'div',
+	null,
+	arr
 ), document.getElementById('app2'));
 
 // 使用组件，function Xyz(props)方法就用于生成一个组件类，function必须大写开头
-function HelloMessage(props) {
-    return _react2.default.createElement(
-        'h3',
-        { className: 'red-color' },
-        'Hello, ',
-        props.name
-    );
+function Welcome(props) {
+	return _react2.default.createElement(
+		'h3',
+		null,
+		'Hello, ',
+		props.name
+	);
+}
+var elementWelcome = _react2.default.createElement(Welcome, { name: 'Sara' });
+_reactDom2.default.render(elementWelcome, document.getElementById('app3'));
+
+// 组合多个组件
+function App() {
+	return _react2.default.createElement(
+		'div',
+		null,
+		_react2.default.createElement(Welcome, { name: 'Sara' }),
+		_react2.default.createElement(Welcome, { name: 'Cahal' }),
+		_react2.default.createElement(Welcome, { name: 'Edite' })
+	);
 }
 
-_reactDom2.default.render(_react2.default.createElement(HelloMessage, { name: 'John' }), document.getElementById('app3'));
+_reactDom2.default.render(_react2.default.createElement(App, null), document.getElementById('app4'));
 
-// 使用组件，处理子节点
-function NotesList(props) {
-    return _react2.default.createElement(
-        'div',
-        null,
-        _react2.default.Children.map(props.children, function (child, i) {
-            return _react2.default.createElement(
-                'li',
-                null,
-                i,
-                ' : ',
-                child
-            );
-        })
-    );
-}
+// JSX 最原始的方式创建element
+var element = _react2.default.createElement('h3', { className: 'red-color' }, 'Hello, world!');
+
+// 等价于以下代码
+// const element = (
+//     <h1 className="greeting">
+//         Hello, world!
+//     </h1>
+// );
 
 _reactDom2.default.render(_react2.default.createElement(
-    NotesList,
-    null,
-    _react2.default.createElement(
-        'span',
-        null,
-        'hello'
-    ),
-    _react2.default.createElement(
-        'span',
-        null,
-        'world'
-    )
-), document.getElementById('app4'));
+	'div',
+	null,
+	element
+), document.getElementById('app5'));
+
+// JSX 动态变更
+function tick() {
+	var element = _react2.default.createElement(
+		'div',
+		null,
+		_react2.default.createElement(
+			'h3',
+			null,
+			'Hello, world!'
+		),
+		_react2.default.createElement(
+			'h3',
+			{ className: 'green-color' },
+			'It is ',
+			new Date().toLocaleTimeString()
+		)
+	);
+	_reactDom2.default.render(element, document.getElementById('app6'));
+}
+
+tick();
+setInterval(tick, 1000);
+
+// JSX 组件的嵌套
+function formatDate(date) {
+	return date.toLocaleDateString();
+}
+
+function Avatar(props) {
+	return _react2.default.createElement('img', { className: 'Avatar',
+		src: props.user.avatarUrl,
+		alt: props.user.name });
+}
+
+function UserInfo(props) {
+	return _react2.default.createElement(
+		'div',
+		{ className: 'UserInfo' },
+		_react2.default.createElement(Avatar, { user: props.user }),
+		_react2.default.createElement(
+			'div',
+			{ className: 'UserInfo-name' },
+			props.user.name
+		)
+	);
+}
+
+function Comment(props) {
+	return _react2.default.createElement(
+		'div',
+		{ className: 'Comment' },
+		_react2.default.createElement(UserInfo, { user: props.author }),
+		_react2.default.createElement(
+			'div',
+			{ className: 'Comment-text' },
+			props.text
+		),
+		_react2.default.createElement(
+			'div',
+			{ className: 'Comment-date' },
+			formatDate(props.date)
+		)
+	);
+}
+
+var comment = {
+	date: new Date(),
+	text: 'I hope you enjoy learning React!',
+	author: {
+		name: 'Hello Kitty',
+		avatarUrl: 'http://placekitten.com/g/64/64'
+	}
+};
+
+_reactDom2.default.render(_react2.default.createElement(Comment, {
+	date: comment.date,
+	text: comment.text,
+	author: comment.author }), document.getElementById('app7'));
+
+// JSX 状态state
+
+var Clock = function (_React$Component) {
+	_inherits(Clock, _React$Component);
+
+	function Clock(props) {
+		_classCallCheck(this, Clock);
+
+		var _this = _possibleConstructorReturn(this, (Clock.__proto__ || Object.getPrototypeOf(Clock)).call(this, props));
+
+		_this.state = { date: new Date() };
+		return _this;
+	}
+
+	_createClass(Clock, [{
+		key: 'componentDidMount',
+		value: function componentDidMount() {
+			var _this2 = this;
+
+			this.timerID = setInterval(function () {
+				return _this2.tick();
+			}, 1000);
+		}
+	}, {
+		key: 'componentWillUnmount',
+		value: function componentWillUnmount() {
+			clearInterval(this.timerID);
+		}
+	}, {
+		key: 'tick',
+		value: function tick() {
+			this.setState({
+				date: new Date()
+			});
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			return _react2.default.createElement(
+				'div',
+				null,
+				_react2.default.createElement(
+					'h3',
+					null,
+					'Hello, world!'
+				),
+				_react2.default.createElement(
+					'h3',
+					{ className: 'blue-color' },
+					'It is ',
+					this.state.date.toLocaleTimeString()
+				)
+			);
+		}
+	}]);
+
+	return Clock;
+}(_react2.default.Component);
+
+_reactDom2.default.render(_react2.default.createElement(Clock, null), document.getElementById('app8'));
 
 /***/ }),
 /* 83 */
