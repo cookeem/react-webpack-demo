@@ -148,7 +148,7 @@ ReactDOM.render(
 	document.getElementById('app7')
 );
 
-// JSX 状态state
+// JSX 状态state, ES6 class方式
 class Clock extends React.Component {
 	constructor(props) {
 		super(props);
@@ -156,6 +156,7 @@ class Clock extends React.Component {
 	}
 	componentDidMount() {
 		this.timerID = setInterval(() => this.tick(),1000);
+		console.log(this);
 	}
 	componentWillUnmount() {
 		clearInterval(this.timerID);
@@ -178,4 +179,156 @@ class Clock extends React.Component {
 ReactDOM.render(
 	<Clock />,
 	document.getElementById('app8')
+);
+
+// JSX 事件处理
+function ActionLink() {
+	function handleClick(e) {
+		e.preventDefault();
+		alert('The link was clicked.');
+	}
+
+	return (
+		<a href="#" onClick={handleClick}>
+			Click me
+		</a>
+	);
+}
+
+ReactDOM.render(
+	<ActionLink />,
+	document.getElementById('app9')
+);
+
+// JSX 事件处理, ES6 class方式
+class LoggingButton extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {isToggleOn: true};
+
+		// This binding is necessary to make `this` work in the callback
+		this.handleClick = this.handleClick.bind(this);
+	};
+
+	handleClick() {
+		this.setState({
+			isToggleOn: !this.state.isToggleOn
+		});
+		alert('isToggleOn:' + this.state.isToggleOn);
+	};
+
+	render() {
+		return (
+			<div>
+				<button onClick={(e) => this.handleClick(e)}>
+					Click me 1
+				</button>
+				<button onClick={this.handleClick}>
+					Click me 2
+				</button>
+			</div>
+		);
+	}
+}
+
+ReactDOM.render(
+	<LoggingButton/>,
+	document.getElementById('app10')
+);
+
+
+// JSX 有条件的render
+class LoginControl extends React.Component {
+	constructor(props) {
+		super(props);
+		this.handleLoginClick = this.handleLoginClick.bind(this);
+		this.handleLogoutClick = this.handleLogoutClick.bind(this);
+		this.state = {isLoggedIn: false};
+	}
+
+	handleLoginClick() {
+		this.setState({isLoggedIn: true});
+	}
+
+	handleLogoutClick() {
+		this.setState({isLoggedIn: false});
+	}
+
+	render() {
+		const isLoggedIn = this.state.isLoggedIn;
+
+		let button = null;
+		if (isLoggedIn) {
+			button = <LogoutButton onClick={this.handleLogoutClick} />;
+		} else {
+			button = <LoginButton onClick={this.handleLoginClick} />;
+		}
+
+		return (
+			<div>
+				<Greeting isLoggedIn={isLoggedIn} />
+				{button}
+			</div>
+		);
+	}
+}
+
+function UserGreeting(props) {
+	return <h3 className="blue-color">Welcome back!</h3>;
+}
+
+function GuestGreeting(props) {
+	return <h3 className="red-color">Please sign up.</h3>;
+}
+
+function Greeting(props) {
+	const isLoggedIn = props.isLoggedIn;
+	if (isLoggedIn) {
+		return <UserGreeting />;
+	}
+	return <GuestGreeting />;
+}
+
+function LoginButton(props) {
+	return (
+		<button onClick={props.onClick}>
+			Login
+		</button>
+	);
+}
+
+function LogoutButton(props) {
+	return (
+		<button onClick={props.onClick}>
+			Logout
+		</button>
+	);
+}
+
+ReactDOM.render(
+	<LoginControl />,
+	document.getElementById('app11')
+);
+
+
+
+// JSX 有条件的render，同一行提供判断条件
+function Mailbox(props) {
+	const unreadMessages = props.unreadMessages;
+	return (
+		<div>
+			<h3>Hello!</h3>
+			{unreadMessages.length > 0 &&
+			<div>
+				You have {unreadMessages.length} unread messages.
+			</div>
+			}
+		</div>
+	);
+}
+
+const messages = ['React', 'Re: React', 'Re:Re: React'];
+ReactDOM.render(
+	<Mailbox unreadMessages={messages} />,
+	document.getElementById('app12')
 );

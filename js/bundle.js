@@ -9705,7 +9705,7 @@ _reactDom2.default.render(_react2.default.createElement(Comment, {
 	text: comment.text,
 	author: comment.author }), document.getElementById('app7'));
 
-// JSX 状态state
+// JSX 状态state, ES6 class方式
 
 var Clock = function (_React$Component) {
 	_inherits(Clock, _React$Component);
@@ -9727,6 +9727,7 @@ var Clock = function (_React$Component) {
 			this.timerID = setInterval(function () {
 				return _this2.tick();
 			}, 1000);
+			console.log(this);
 		}
 	}, {
 		key: 'componentWillUnmount',
@@ -9765,6 +9766,192 @@ var Clock = function (_React$Component) {
 }(_react2.default.Component);
 
 _reactDom2.default.render(_react2.default.createElement(Clock, null), document.getElementById('app8'));
+
+// JSX 事件处理
+function ActionLink() {
+	function handleClick(e) {
+		e.preventDefault();
+		alert('The link was clicked.');
+	}
+
+	return _react2.default.createElement(
+		'a',
+		{ href: '#', onClick: handleClick },
+		'Click me'
+	);
+}
+
+_reactDom2.default.render(_react2.default.createElement(ActionLink, null), document.getElementById('app9'));
+
+// JSX 事件处理, ES6 class方式
+
+var LoggingButton = function (_React$Component2) {
+	_inherits(LoggingButton, _React$Component2);
+
+	function LoggingButton(props) {
+		_classCallCheck(this, LoggingButton);
+
+		var _this3 = _possibleConstructorReturn(this, (LoggingButton.__proto__ || Object.getPrototypeOf(LoggingButton)).call(this, props));
+
+		_this3.state = { isToggleOn: true };
+
+		// This binding is necessary to make `this` work in the callback
+		_this3.handleClick = _this3.handleClick.bind(_this3);
+		return _this3;
+	}
+
+	_createClass(LoggingButton, [{
+		key: 'handleClick',
+		value: function handleClick() {
+			this.setState({
+				isToggleOn: !this.state.isToggleOn
+			});
+			alert('isToggleOn:' + this.state.isToggleOn);
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			var _this4 = this;
+
+			return _react2.default.createElement(
+				'div',
+				null,
+				_react2.default.createElement(
+					'button',
+					{ onClick: function onClick(e) {
+							return _this4.handleClick(e);
+						} },
+					'Click me 1'
+				),
+				_react2.default.createElement(
+					'button',
+					{ onClick: this.handleClick },
+					'Click me 2'
+				)
+			);
+		}
+	}]);
+
+	return LoggingButton;
+}(_react2.default.Component);
+
+_reactDom2.default.render(_react2.default.createElement(LoggingButton, null), document.getElementById('app10'));
+
+// JSX 有条件的render
+
+var LoginControl = function (_React$Component3) {
+	_inherits(LoginControl, _React$Component3);
+
+	function LoginControl(props) {
+		_classCallCheck(this, LoginControl);
+
+		var _this5 = _possibleConstructorReturn(this, (LoginControl.__proto__ || Object.getPrototypeOf(LoginControl)).call(this, props));
+
+		_this5.handleLoginClick = _this5.handleLoginClick.bind(_this5);
+		_this5.handleLogoutClick = _this5.handleLogoutClick.bind(_this5);
+		_this5.state = { isLoggedIn: false };
+		return _this5;
+	}
+
+	_createClass(LoginControl, [{
+		key: 'handleLoginClick',
+		value: function handleLoginClick() {
+			this.setState({ isLoggedIn: true });
+		}
+	}, {
+		key: 'handleLogoutClick',
+		value: function handleLogoutClick() {
+			this.setState({ isLoggedIn: false });
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			var isLoggedIn = this.state.isLoggedIn;
+
+			var button = null;
+			if (isLoggedIn) {
+				button = _react2.default.createElement(LogoutButton, { onClick: this.handleLogoutClick });
+			} else {
+				button = _react2.default.createElement(LoginButton, { onClick: this.handleLoginClick });
+			}
+
+			return _react2.default.createElement(
+				'div',
+				null,
+				_react2.default.createElement(Greeting, { isLoggedIn: isLoggedIn }),
+				button
+			);
+		}
+	}]);
+
+	return LoginControl;
+}(_react2.default.Component);
+
+function UserGreeting(props) {
+	return _react2.default.createElement(
+		'h3',
+		{ className: 'blue-color' },
+		'Welcome back!'
+	);
+}
+
+function GuestGreeting(props) {
+	return _react2.default.createElement(
+		'h3',
+		{ className: 'red-color' },
+		'Please sign up.'
+	);
+}
+
+function Greeting(props) {
+	var isLoggedIn = props.isLoggedIn;
+	if (isLoggedIn) {
+		return _react2.default.createElement(UserGreeting, null);
+	}
+	return _react2.default.createElement(GuestGreeting, null);
+}
+
+function LoginButton(props) {
+	return _react2.default.createElement(
+		'button',
+		{ onClick: props.onClick },
+		'Login'
+	);
+}
+
+function LogoutButton(props) {
+	return _react2.default.createElement(
+		'button',
+		{ onClick: props.onClick },
+		'Logout'
+	);
+}
+
+_reactDom2.default.render(_react2.default.createElement(LoginControl, null), document.getElementById('app11'));
+
+// JSX 有条件的render，同一行提供判断条件
+function Mailbox(props) {
+	var unreadMessages = props.unreadMessages;
+	return _react2.default.createElement(
+		'div',
+		null,
+		_react2.default.createElement(
+			'h3',
+			null,
+			'Hello!'
+		),
+		unreadMessages.length > 0 && _react2.default.createElement(
+			'div',
+			null,
+			'You have ',
+			unreadMessages.length,
+			' unread messages.'
+		)
+	);
+}
+
+var messages = ['React', 'Re: React', 'Re:Re: React'];
+_reactDom2.default.render(_react2.default.createElement(Mailbox, { unreadMessages: messages }), document.getElementById('app12'));
 
 /***/ }),
 /* 83 */
