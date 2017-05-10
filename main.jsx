@@ -440,3 +440,112 @@ ReactDOM.render(
 	<NumberList numbers={numbers} />,
 	document.getElementById('app14')
 );
+
+
+/////////////////////////////////
+// JSX 表单绑定 受控组件
+/////////////////////////////////
+class MultiForm extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			valueInput: '',
+			valueText: '',
+			valueSelect: 'mango',
+		};
+
+		this.handleInputChange = this.handleInputChange.bind(this);
+		this.handleTextChange = this.handleTextChange.bind(this);
+		this.handleSelectChange = this.handleSelectChange.bind(this);
+		this.handleSubmit = this.handleSubmit.bind(this);
+	}
+
+	handleInputChange(event) {
+		this.setState({valueInput: event.target.value.toUpperCase()});
+	}
+
+	handleTextChange(event) {
+		this.setState({valueText: event.target.value});
+	}
+
+	handleSelectChange(event) {
+		this.setState({valueSelect: event.target.value});
+	}
+
+	handleSubmit(event) {
+		alert('valueInput: ' + this.state.valueInput + ', valueText:' + this.state.valueText + ', valueSelect:' + this.state.valueSelect);
+		event.preventDefault();
+	}
+
+	render() {
+		return (
+			<form onSubmit={this.handleSubmit}>
+				<label>
+					valueInput:
+					<input type="text" value={this.state.valueInput} onChange={this.handleInputChange} />
+				</label>
+				<label>
+					valueText:
+					<textarea onChange={this.handleTextChange}>
+					</textarea>
+				</label>
+				<label>
+					valueSelect:
+					<select value={this.state.valueSelect} onChange={this.handleSelectChange}>
+						<option value="grapefruit">Grapefruit</option>
+						<option value="lime">Lime</option>
+						<option value="coconut">Coconut</option>
+						<option value="mango">Mango</option>
+					</select>
+				</label>
+				<input type="submit" value="Submit" />
+				<div>
+					valueInput: {this.state.valueInput}
+				</div>
+				<div>
+					valueText: {this.state.valueText}
+				</div>
+				<div>
+					valueSelect: {this.state.valueSelect}
+				</div>
+			</form>
+		);
+	}
+}
+
+ReactDOM.render(
+	<MultiForm/>,
+	document.getElementById('app15')
+);
+
+
+/////////////////////////////////
+// JSX 表单绑定 非受控组件 不推荐
+/////////////////////////////////
+class NameForm extends React.Component {
+	constructor(props) {
+		super(props);
+		this.handleSubmit = this.handleSubmit.bind(this);
+	}
+
+	handleSubmit(event) {
+		alert('A name was submitted: ' + this.input.value);
+		event.preventDefault();
+	}
+
+	render() {
+		return (
+			<form onSubmit={this.handleSubmit}>
+				<label>
+					Name:
+					<input type="text" ref={(input) => this.input = input} />
+				</label>
+				<input type="submit" value="Submit" />
+			</form>
+		);
+	}
+}
+ReactDOM.render(
+	<NameForm/>,
+	document.getElementById('app16')
+);
