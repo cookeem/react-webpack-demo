@@ -520,6 +520,79 @@ ReactDOM.render(
 
 
 /////////////////////////////////
+// JSX 多表单绑定 单个处理函数
+/////////////////////////////////
+class Reservation extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			isGoing: true,
+			numberOfGuests: 2
+		};
+
+		this.handleInputChange = this.handleInputChange.bind(this);
+	}
+
+	handleInputChange(event) {
+		const target = event.target;
+		//checkbox有问题，无法获取
+		const value = target.type === 'checkbox' ? target.checked : target.value;
+		const name = target.name;
+
+		this.setState({
+			[name]: value
+		});
+
+		alert(this.state.isGoing);
+	}
+
+	render() {
+		return (
+			<form>
+				<label>
+					Is going:
+					<input
+						name="isGoing"
+						type="checkbox"
+						checked={this.state.isGoing}
+						onChange={this.handleInputChange} />
+				</label>
+				<br />
+				<label>
+					Number of guests:
+					<input
+						name="numberOfGuests"
+						type="number"
+						value={this.state.numberOfGuests}
+						onChange={this.handleInputChange} />
+				</label>
+				<label>
+					User name:
+					<input
+						name="userName"
+						type="text"
+						onChange={this.handleInputChange} />
+				</label>
+				<div>
+					isGoing: {this.state.isGoing}
+				</div>
+				<div>
+					numberOfGuests: {this.state.numberOfGuests}
+				</div>
+				<div>
+					userName: {this.state.userName}
+				</div>
+			</form>
+		);
+	}
+}
+
+ReactDOM.render(
+	<Reservation />,
+	document.getElementById('app16')
+);
+
+/////////////////////////////////
 // JSX 表单绑定 非受控组件 不推荐
 /////////////////////////////////
 class NameForm extends React.Component {
@@ -547,5 +620,5 @@ class NameForm extends React.Component {
 }
 ReactDOM.render(
 	<NameForm/>,
-	document.getElementById('app16')
+	document.getElementById('app17')
 );

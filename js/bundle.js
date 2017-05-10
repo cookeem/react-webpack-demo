@@ -9542,6 +9542,8 @@ var _reactDom2 = _interopRequireDefault(_reactDom);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -10194,19 +10196,115 @@ var MultiForm = function (_React$Component5) {
 _reactDom2.default.render(_react2.default.createElement(MultiForm, null), document.getElementById('app15'));
 
 /////////////////////////////////
-// JSX 表单绑定 非受控组件
+// JSX 多表单绑定 单个处理函数
 /////////////////////////////////
 
-var NameForm = function (_React$Component6) {
-	_inherits(NameForm, _React$Component6);
+var Reservation = function (_React$Component6) {
+	_inherits(Reservation, _React$Component6);
+
+	function Reservation(props) {
+		_classCallCheck(this, Reservation);
+
+		var _this8 = _possibleConstructorReturn(this, (Reservation.__proto__ || Object.getPrototypeOf(Reservation)).call(this, props));
+
+		_this8.state = {
+			isGoing: true,
+			numberOfGuests: 2
+		};
+
+		_this8.handleInputChange = _this8.handleInputChange.bind(_this8);
+		return _this8;
+	}
+
+	_createClass(Reservation, [{
+		key: 'handleInputChange',
+		value: function handleInputChange(event) {
+			var target = event.target;
+			//checkbox有问题，无法获取
+			var value = target.type === 'checkbox' ? target.checked : target.value;
+			var name = target.name;
+
+			this.setState(_defineProperty({}, name, value));
+
+			alert(this.state.isGoing);
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			return _react2.default.createElement(
+				'form',
+				null,
+				_react2.default.createElement(
+					'label',
+					null,
+					'Is going:',
+					_react2.default.createElement('input', {
+						name: 'isGoing',
+						type: 'checkbox',
+						checked: this.state.isGoing,
+						onChange: this.handleInputChange })
+				),
+				_react2.default.createElement('br', null),
+				_react2.default.createElement(
+					'label',
+					null,
+					'Number of guests:',
+					_react2.default.createElement('input', {
+						name: 'numberOfGuests',
+						type: 'number',
+						value: this.state.numberOfGuests,
+						onChange: this.handleInputChange })
+				),
+				_react2.default.createElement(
+					'label',
+					null,
+					'User name:',
+					_react2.default.createElement('input', {
+						name: 'userName',
+						type: 'text',
+						onChange: this.handleInputChange })
+				),
+				_react2.default.createElement(
+					'div',
+					null,
+					'isGoing: ',
+					this.state.isGoing
+				),
+				_react2.default.createElement(
+					'div',
+					null,
+					'numberOfGuests: ',
+					this.state.numberOfGuests
+				),
+				_react2.default.createElement(
+					'div',
+					null,
+					'userName: ',
+					this.state.userName
+				)
+			);
+		}
+	}]);
+
+	return Reservation;
+}(_react2.default.Component);
+
+_reactDom2.default.render(_react2.default.createElement(Reservation, null), document.getElementById('app16'));
+
+/////////////////////////////////
+// JSX 表单绑定 非受控组件 不推荐
+/////////////////////////////////
+
+var NameForm = function (_React$Component7) {
+	_inherits(NameForm, _React$Component7);
 
 	function NameForm(props) {
 		_classCallCheck(this, NameForm);
 
-		var _this8 = _possibleConstructorReturn(this, (NameForm.__proto__ || Object.getPrototypeOf(NameForm)).call(this, props));
+		var _this9 = _possibleConstructorReturn(this, (NameForm.__proto__ || Object.getPrototypeOf(NameForm)).call(this, props));
 
-		_this8.handleSubmit = _this8.handleSubmit.bind(_this8);
-		return _this8;
+		_this9.handleSubmit = _this9.handleSubmit.bind(_this9);
+		return _this9;
 	}
 
 	_createClass(NameForm, [{
@@ -10218,7 +10316,7 @@ var NameForm = function (_React$Component6) {
 	}, {
 		key: 'render',
 		value: function render() {
-			var _this9 = this;
+			var _this10 = this;
 
 			return _react2.default.createElement(
 				'form',
@@ -10228,7 +10326,7 @@ var NameForm = function (_React$Component6) {
 					null,
 					'Name:',
 					_react2.default.createElement('input', { type: 'text', ref: function ref(input) {
-							return _this9.input = input;
+							return _this10.input = input;
 						} })
 				),
 				_react2.default.createElement('input', { type: 'submit', value: 'Submit' })
@@ -10239,7 +10337,7 @@ var NameForm = function (_React$Component6) {
 	return NameForm;
 }(_react2.default.Component);
 
-_reactDom2.default.render(_react2.default.createElement(NameForm, null), document.getElementById('app16'));
+_reactDom2.default.render(_react2.default.createElement(NameForm, null), document.getElementById('app17'));
 
 /***/ }),
 /* 83 */
