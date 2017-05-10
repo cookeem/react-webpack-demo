@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-// JSX 的基本语法规则：
-// 遇到 HTML 标签（以 < 开头），就用 HTML 规则解析；
-// 遇到代码块（以 { 开头），就用 JavaScript 规则解析。
+/////////////////////////////////
+// JSX 使用数组
+/////////////////////////////////
 const users = [
     {name:'Cloud', age: 28},
 	{name:'Cid', age: 32},
@@ -22,16 +22,22 @@ ReactDOM.render(
 );
 
 
+/////////////////////////////////
+// JSX 使用列表
+/////////////////////////////////
 const arr = [
-    <h3>Hello world!</h3>,
-    <h3>React is awesome</h3>,
+    <h3 key="1">Hello world!</h3>,
+    <h3 key="2">React is awesome</h3>,
 ];
 ReactDOM.render(
     <div>{arr}</div>,
     document.getElementById('app2')
 );
 
-// 使用组件，function Xyz(props)方法就用于生成一个组件类，function必须大写开头
+
+/////////////////////////////////
+// JSX 使用组件，function Xyz(props)方法就用于生成一个组件类，function必须大写开头
+/////////////////////////////////
 function Welcome(props) {
 	return <h3>Hello, {props.name}</h3>;
 }
@@ -41,7 +47,10 @@ ReactDOM.render(
     document.getElementById('app3')
 );
 
-// 组合多个组件
+
+/////////////////////////////////
+// JSX 组合多个组件
+/////////////////////////////////
 function App() {
 	return (
         <div>
@@ -57,7 +66,9 @@ ReactDOM.render(
 	document.getElementById('app4')
 );
 
+/////////////////////////////////
 // JSX 最原始的方式创建element
+/////////////////////////////////
 const element = React.createElement(
 	'h3',
 	{className: 'red-color'},
@@ -76,7 +87,10 @@ ReactDOM.render(
     document.getElementById('app5')
 );
 
+
+/////////////////////////////////
 // JSX 动态变更
+/////////////////////////////////
 function tick() {
 	const element = (
         <div>
@@ -93,7 +107,10 @@ function tick() {
 tick();
 setInterval(tick, 1000);
 
+
+/////////////////////////////////
 // JSX 组件的嵌套
+/////////////////////////////////
 function formatDate(date) {
 	return date.toLocaleDateString();
 }
@@ -148,7 +165,10 @@ ReactDOM.render(
 	document.getElementById('app7')
 );
 
+
+/////////////////////////////////
 // JSX 状态state, ES6 class方式
+/////////////////////////////////
 class Clock extends React.Component {
 	constructor(props) {
 		super(props);
@@ -181,7 +201,10 @@ ReactDOM.render(
 	document.getElementById('app8')
 );
 
+
+/////////////////////////////////
 // JSX 事件处理
+/////////////////////////////////
 function ActionLink() {
 	function handleClick(e) {
 		e.preventDefault();
@@ -200,7 +223,10 @@ ReactDOM.render(
 	document.getElementById('app9')
 );
 
+
+/////////////////////////////////
 // JSX 事件处理, ES6 class方式
+/////////////////////////////////
 class LoggingButton extends React.Component {
 	constructor(props) {
 		super(props);
@@ -237,7 +263,9 @@ ReactDOM.render(
 );
 
 
+/////////////////////////////////
 // JSX 有条件的render
+/////////////////////////////////
 class LoginControl extends React.Component {
 	constructor(props) {
 		super(props);
@@ -311,17 +339,29 @@ ReactDOM.render(
 );
 
 
-
+/////////////////////////////////
 // JSX 有条件的render，同一行提供判断条件
+/////////////////////////////////
 function Mailbox(props) {
 	const unreadMessages = props.unreadMessages;
 	return (
 		<div>
 			<h3>Hello!</h3>
+			{unreadMessages.length > 0 ? (
+				<div>
+					You have {unreadMessages.length} unread messages.
+				</div>
+			) : (
+				<div>
+					You haven't unread messages.
+				</div>
+			)
+			}
+			<h3>Hello!</h3>
 			{unreadMessages.length > 0 &&
-			<div>
-				You have {unreadMessages.length} unread messages.
-			</div>
+				<div>
+					You have {unreadMessages.length} unread messages.
+				</div>
 			}
 		</div>
 	);
@@ -331,4 +371,72 @@ const messages = ['React', 'Re: React', 'Re:Re: React'];
 ReactDOM.render(
 	<Mailbox unreadMessages={messages} />,
 	document.getElementById('app12')
+);
+
+
+/////////////////////////////////
+// JSX return null隐藏元素
+/////////////////////////////////
+function WarningBanner(props) {
+	if (!props.warn) {
+		return null;
+	}
+
+	return (
+		<div className="warning">
+			Warning!
+		</div>
+	);
+}
+
+class Page extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {showWarning: true};
+		this.handleToggleClick = this.handleToggleClick.bind(this);
+	}
+
+	handleToggleClick() {
+		this.setState(prevState => ({
+			showWarning: !prevState.showWarning
+		}));
+	}
+
+	render() {
+		return (
+			<div>
+				<WarningBanner warn={this.state.showWarning} />
+				<button onClick={this.handleToggleClick}>
+					{this.state.showWarning ? 'Hide' : 'Show'}
+				</button>
+			</div>
+		);
+	}
+}
+
+ReactDOM.render(
+	<Page />,
+	document.getElementById('app13')
+);
+
+
+/////////////////////////////////
+// JSX 列表操作
+/////////////////////////////////
+function NumberList(props) {
+	const numbers = props.numbers;
+	const listItems = numbers.map((number, i) =>
+		<li key={i}>
+			{number}
+		</li>
+	);
+	return (
+		<ul>{listItems}</ul>
+	);
+}
+
+const numbers = [1, 2, 3, 4, 5];
+ReactDOM.render(
+	<NumberList numbers={numbers} />,
+	document.getElementById('app14')
 );
