@@ -1,6 +1,8 @@
 // 如果使用webpack，必须取消以下注释
 import React from 'react';
 import ReactDOM from 'react-dom';
+//引用外部包，如果以jsx结尾，必须使用文件全名
+import {CustomButton, CounterButton} from './external.jsx';
 
 /////////////////////////////////
 // JSX 使用数组
@@ -855,6 +857,12 @@ function Dialog(props) {
 				<p className="Dialog-message">
 					{props.message}
 				</p>
+				<div>
+					<CustomButton text="这个是在button.jsx中定义的按钮"/>
+				</div>
+				<div>
+					<CounterButton/>
+				</div>
 			</FancyBorder>
 		</FancyBorder>
 	);

@@ -16,7 +16,7 @@ $ npm install webpack
 
 ## npm安装webpack-dev-server，本地模式，用于本地测试
 ```sh
-$ npm install webpack webpack-dev-server --save
+$ npm install webpack-dev-server
 ```
 
 ## npm安装相关依赖，本地模式
