@@ -10209,7 +10209,11 @@ var Reservation = function (_React$Component6) {
 
 		_this8.state = {
 			isGoing: true,
-			numberOfGuests: 2
+			numberOfGuests: 2,
+			userName: "cookeem",
+			fruit: "mango",
+			sex: "male",
+			car: ["audi", "opel"]
 		};
 
 		_this8.handleInputChange = _this8.handleInputChange.bind(_this8);
@@ -10220,13 +10224,21 @@ var Reservation = function (_React$Component6) {
 		key: 'handleInputChange',
 		value: function handleInputChange(event) {
 			var target = event.target;
-			//checkbox有问题，无法获取
-			var value = target.type === 'checkbox' ? target.checked : target.value;
-			var name = target.name;
-
-			this.setState(_defineProperty({}, name, value));
-
-			alert(this.state.isGoing);
+			if (target.tagName === 'SELECT' && target.multiple) {
+				var options = target.options;
+				var value = [];
+				for (var i = 0, l = options.length; i < l; i++) {
+					if (options[i].selected) {
+						value.push(options[i].value);
+					}
+				}
+				var name = target.name;
+				this.setState(_defineProperty({}, name, value));
+			} else {
+				var _value = target.type === 'checkbox' ? target.checked : target.value;
+				var _name = target.name;
+				this.setState(_defineProperty({}, _name, _value));
+			}
 		}
 	}, {
 		key: 'render',
@@ -10255,6 +10267,7 @@ var Reservation = function (_React$Component6) {
 						value: this.state.numberOfGuests,
 						onChange: this.handleInputChange })
 				),
+				_react2.default.createElement('br', null),
 				_react2.default.createElement(
 					'label',
 					null,
@@ -10262,13 +10275,84 @@ var Reservation = function (_React$Component6) {
 					_react2.default.createElement('input', {
 						name: 'userName',
 						type: 'text',
+						value: this.state.userName,
 						onChange: this.handleInputChange })
+				),
+				_react2.default.createElement('br', null),
+				_react2.default.createElement(
+					'label',
+					null,
+					'fruit:',
+					_react2.default.createElement(
+						'select',
+						{ name: 'fruit', value: this.state.fruit, onChange: this.handleInputChange },
+						_react2.default.createElement(
+							'option',
+							{ value: 'grapefruit' },
+							'Grapefruit'
+						),
+						_react2.default.createElement(
+							'option',
+							{ value: 'lime' },
+							'Lime'
+						),
+						_react2.default.createElement(
+							'option',
+							{ value: 'coconut' },
+							'Coconut'
+						),
+						_react2.default.createElement(
+							'option',
+							{ value: 'mango' },
+							'Mango'
+						)
+					)
+				),
+				_react2.default.createElement('br', null),
+				_react2.default.createElement(
+					'label',
+					null,
+					'sex:',
+					_react2.default.createElement('input', { type: 'radio', name: 'sex', value: 'male', checked: this.state.sex === "male", onChange: this.handleInputChange }),
+					'Male',
+					_react2.default.createElement('input', { type: 'radio', name: 'sex', value: 'female', checked: this.state.sex === "female", onChange: this.handleInputChange }),
+					'Female'
+				),
+				_react2.default.createElement('br', null),
+				_react2.default.createElement(
+					'label',
+					null,
+					'car:',
+					_react2.default.createElement(
+						'select',
+						{ name: 'car', multiple: 'multiple', size: '3', value: this.state.car, onChange: this.handleInputChange },
+						_react2.default.createElement(
+							'option',
+							{ value: 'volvo', checked: this.state.car.indexOf("volvo") > -1 },
+							'Volvo'
+						),
+						_react2.default.createElement(
+							'option',
+							{ value: 'saab', checked: this.state.car.indexOf("saab") > -1 },
+							'Saab'
+						),
+						_react2.default.createElement(
+							'option',
+							{ value: 'opel', checked: this.state.car.indexOf("opel") > -1 },
+							'Opel'
+						),
+						_react2.default.createElement(
+							'option',
+							{ value: 'audi', checked: this.state.car.indexOf("audi") > -1 },
+							'Audi'
+						)
+					)
 				),
 				_react2.default.createElement(
 					'div',
 					null,
 					'isGoing: ',
-					this.state.isGoing
+					this.state.isGoing.toString()
 				),
 				_react2.default.createElement(
 					'div',
@@ -10281,6 +10365,24 @@ var Reservation = function (_React$Component6) {
 					null,
 					'userName: ',
 					this.state.userName
+				),
+				_react2.default.createElement(
+					'div',
+					null,
+					'fruit: ',
+					this.state.fruit
+				),
+				_react2.default.createElement(
+					'div',
+					null,
+					'sex: ',
+					this.state.sex
+				),
+				_react2.default.createElement(
+					'div',
+					null,
+					'car: ',
+					this.state.car.toString()
 				)
 			);
 		}

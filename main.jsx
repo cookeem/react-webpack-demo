@@ -527,7 +527,11 @@ class Reservation extends React.Component {
 		super(props);
 		this.state = {
 			isGoing: true,
-			numberOfGuests: 2
+			numberOfGuests: 2,
+			userName: "cookeem",
+			fruit: "mango",
+			sex: "male",
+			car: ["audi", "opel"],
 		};
 
 		this.handleInputChange = this.handleInputChange.bind(this);
@@ -535,15 +539,25 @@ class Reservation extends React.Component {
 
 	handleInputChange(event) {
 		const target = event.target;
-		//checkbox有问题，无法获取
-		const value = target.type === 'checkbox' ? target.checked : target.value;
-		const name = target.name;
-
-		this.setState({
-			[name]: value
-		});
-
-		alert(this.state.isGoing);
+		if (target.tagName === 'SELECT' && target.multiple) {
+			let options = target.options;
+			let value = [];
+			for (let i = 0, l = options.length; i < l; i++) {
+				if (options[i].selected) {
+					value.push(options[i].value);
+				}
+			}
+			const name = target.name;
+			this.setState({
+				[name]: value
+			});
+		} else {
+			const value = target.type === 'checkbox' ? target.checked : target.value;
+			const name = target.name;
+			this.setState({
+				[name]: value
+			});
+		}
 	}
 
 	render() {
@@ -566,21 +580,58 @@ class Reservation extends React.Component {
 						value={this.state.numberOfGuests}
 						onChange={this.handleInputChange} />
 				</label>
+				<br />
 				<label>
 					User name:
 					<input
 						name="userName"
 						type="text"
+						value={this.state.userName}
 						onChange={this.handleInputChange} />
 				</label>
+				<br />
+				<label>
+					fruit:
+					<select name="fruit" value={this.state.fruit} onChange={this.handleInputChange}>
+						<option value="grapefruit">Grapefruit</option>
+						<option value="lime">Lime</option>
+						<option value="coconut">Coconut</option>
+						<option value="mango">Mango</option>
+					</select>
+				</label>
+				<br />
+				<label>
+					sex:
+					<input type="radio" name="sex" value="male" checked={this.state.sex === "male"} onChange={this.handleInputChange}/>Male
+					<input type="radio" name="sex" value="female" checked={this.state.sex === "female"} onChange={this.handleInputChange}/>Female
+				</label>
+				<br />
+				<label>
+					car:
+					<select name="car" multiple="multiple" size="3" value={this.state.car} onChange={this.handleInputChange}>
+						<option value ="volvo" checked={this.state.car.indexOf("volvo") > -1}>Volvo</option>
+						<option value ="saab" checked={this.state.car.indexOf("saab") > -1}>Saab</option>
+						<option value="opel" checked={this.state.car.indexOf("opel") > -1}>Opel</option>
+						<option value="audi" checked={this.state.car.indexOf("audi") > -1}>Audi</option>
+					</select>
+				</label>
 				<div>
-					isGoing: {this.state.isGoing}
+					isGoing: {this.state.isGoing.toString()}
 				</div>
 				<div>
 					numberOfGuests: {this.state.numberOfGuests}
 				</div>
 				<div>
 					userName: {this.state.userName}
+				</div>
+				<div>
+					fruit: {this.state.fruit}
+				</div>
+				<div>
+					sex: {this.state.sex}
+				</div>
+				<div>
+					car: {this.state.car.toString()}
 				</div>
 			</form>
 		);
