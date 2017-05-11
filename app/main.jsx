@@ -1,3 +1,4 @@
+// 如果使用webpack，必须取消以下注释
 import React from 'react';
 import ReactDOM from 'react-dom';
 
@@ -672,4 +673,202 @@ class NameForm extends React.Component {
 ReactDOM.render(
 	<NameForm/>,
 	document.getElementById('app17')
+);
+
+
+/////////////////////////////////
+// JSX state提升，父对象获取子对象state
+/////////////////////////////////
+const scaleNames = {
+	c: 'Celsius',
+	f: 'Fahrenheit'
+};
+
+function toCelsius(fahrenheit) {
+	return (fahrenheit - 32) * 5 / 9;
+}
+
+function toFahrenheit(celsius) {
+	return (celsius * 9 / 5) + 32;
+}
+
+function tryConvert(temperature, convert) {
+	const input = parseFloat(temperature);
+	if (Number.isNaN(input)) {
+		return '';
+	}
+	const output = convert(input);
+	const rounded = Math.round(output * 1000) / 1000;
+	return rounded.toString();
+}
+
+function BoilingVerdict(props) {
+	if (props.celsius >= 100) {
+		return <p>The water would boil.</p>;
+	}
+	return <p>The water would not boil.</p>;
+}
+
+class TemperatureInput extends React.Component {
+	constructor(props) {
+		super(props);
+		this.handleChange = this.handleChange.bind(this);
+	}
+
+	handleChange(e) {
+		//当TemperatureInput中的数值改变的时候，将会调用Calculator的handleXXXChange方法
+		this.props.onTemperatureChange(e.target.value);
+	}
+
+	render() {
+		const temperature = this.props.temperature;
+		const scale = this.props.scale;
+		console.log("this.props.test:", this.props.test);
+		return (
+			<fieldset>
+				<legend>Enter temperature in {scaleNames[scale]}:</legend>
+				<input value={temperature}
+				       onChange={this.handleChange} />
+			</fieldset>
+		);
+	}
+}
+
+class Calculator extends React.Component {
+	constructor(props) {
+		super(props);
+		this.handleCelsiusChange = this.handleCelsiusChange.bind(this);
+		this.handleFahrenheitChange = this.handleFahrenheitChange.bind(this);
+		this.state = {temperature: '', scale: 'c', test: 'this is test message'};
+	}
+
+	handleCelsiusChange(temperature) {
+		this.setState({scale: 'c', temperature});
+	}
+
+	handleFahrenheitChange(temperature) {
+		this.setState({scale: 'f', temperature});
+	}
+
+	render() {
+		const scale = this.state.scale;
+		const temperature = this.state.temperature;
+		const celsius = scale === 'f' ? tryConvert(temperature, toCelsius) : temperature;
+		const fahrenheit = scale === 'c' ? tryConvert(temperature, toFahrenheit) : temperature;
+
+		return (
+			<div>
+				<TemperatureInput
+					scale="c"
+					temperature={celsius}
+					test="test1"
+					onTemperatureChange={this.handleCelsiusChange} />
+				<TemperatureInput
+					scale="f"
+					temperature={fahrenheit}
+					test="test2"
+					onTemperatureChange={this.handleFahrenheitChange} />
+				<BoilingVerdict
+					celsius={parseFloat(celsius)} />
+			</div>
+		);
+	}
+}
+
+ReactDOM.render(
+	<Calculator />,
+	document.getElementById('app18')
+);
+
+
+
+/////////////////////////////////
+// JSX 继承，组合
+/////////////////////////////////
+function Contacts() {
+	return <div>Contacts</div>;
+}
+
+function Chat() {
+	return <div>Chat</div>;
+}
+
+function SplitPane(props) {
+	let leftStyle = {
+		float: "left",
+		width: "30%",
+		backgroundColor: "#FF0000",
+	};
+	let rightStyle = {
+		float: "right",
+		width: "70%",
+		backgroundColor: "#00FF00",
+	};
+	return (
+		<div>
+			<div style={leftStyle}>
+				{props.left}
+			</div>
+			<div style={rightStyle}>
+				{props.right}
+			</div>
+		</div>
+	);
+}
+
+function MixApp() {
+	return (
+		<SplitPane
+			left={
+				<Contacts />
+			}
+			right={
+				<Chat />
+			} />
+	);
+}
+
+ReactDOM.render(
+	<MixApp />,
+	document.getElementById('app19')
+);
+
+
+/////////////////////////////////
+// JSX 继承，组合 children
+/////////////////////////////////
+function FancyBorder(props) {
+	return (
+		<div className={'FancyBorder FancyBorder-' + props.color}>
+			{props.children}
+		</div>
+	);
+}
+
+function Dialog(props) {
+	return (
+		<FancyBorder color="blue">
+			<FancyBorder color="red">
+				<h1 className="Dialog-title">
+					{props.title}
+				</h1>
+				<p className="Dialog-message">
+					{props.message}
+				</p>
+			</FancyBorder>
+		</FancyBorder>
+	);
+}
+
+function WelcomeDialog() {
+	return (
+		<Dialog
+			title="Welcome"
+			message="Thank you for visiting our spacecraft!" />
+	);
+}
+
+ReactDOM.render(
+	<WelcomeDialog />,
+	document.getElementById('app20')
 );

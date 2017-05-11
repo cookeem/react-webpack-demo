@@ -1,6 +1,8 @@
 var path = require('path');
+var webpack = require('webpack');
+
 var config = {
-	entry: './main.jsx',
+	entry: './app/main.jsx',
     output: {
         path: path.resolve(__dirname, './js'),
         filename: 'bundle.js'
@@ -14,6 +16,11 @@ var config = {
                 presets: ['es2015', 'react']
             }
 		}]
-    }
-}
+    },
+	plugins:[
+		new webpack.DefinePlugin({
+			'process.env.NODE_ENV': JSON.stringify('production')
+		})
+	]
+};
 module.exports = config;
