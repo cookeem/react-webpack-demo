@@ -1,8 +1,147 @@
 // 如果使用webpack，必须取消以下注释
 import React from 'react';
 import ReactDOM from 'react-dom';
-//引用外部包，如果以jsx结尾，必须使用文件全名
+// 引用material-ui
+import injectTapEventPlugin from 'react-tap-event-plugin';
+import {AppBar, Badge, FlatButton, IconButton, RaisedButton} from 'material-ui';
+import {MuiThemeProvider, getMuiTheme} from 'material-ui/styles';
+import NotificationsIcon from 'material-ui/svg-icons/social/notifications';
+import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
+// 引用react router
+import {
+	HashRouter as Router,
+	Route,
+	Link
+} from 'react-router-dom';
+// 引用外部包，如果以jsx结尾，必须使用文件全名
 import {CustomButton, CounterButton} from './external.jsx';
+
+/////////////////////////////////
+// Material UI
+/////////////////////////////////
+injectTapEventPlugin();
+const style = {
+	margin: 12,
+};
+
+const MaterialUIDemo = () => (
+	<MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
+		<div>
+			<AppBar
+				title="This is nav bar"
+				iconClassNameRight="muidocs-icon-navigation-expand-more"
+			/>
+			<FlatButton label="Default" />
+			<FlatButton label="Primary" primary={true} />
+			<FlatButton label="Secondary" secondary={true} />
+			<FlatButton label="Disabled" disabled={true} />
+			<br />
+			<br />
+			<FlatButton label="Full width" fullWidth={true} />
+			<br />
+			<RaisedButton label="Default" style={style} />
+			<RaisedButton label="Primary" primary={true} style={style} />
+			<RaisedButton label="Secondary" secondary={true} style={style} />
+			<RaisedButton label="Disabled" disabled={true} style={style} />
+			<br />
+			<br />
+			<RaisedButton label="Full width" fullWidth={true} />
+			<br />
+			<br />
+			<Badge
+				badgeContent={4}
+				primary={true}
+			>
+				<NotificationsIcon />
+			</Badge>
+			<Badge
+				badgeContent={10}
+				secondary={true}
+				badgeStyle={{top: 12, right: 12}}
+			>
+				<IconButton tooltip="Notifications">
+					<NotificationsIcon />
+				</IconButton>
+			</Badge>
+		</div>
+	</MuiThemeProvider>
+);
+ReactDOM.render(
+	MaterialUIDemo(),
+	document.getElementById('material-ui')
+);
+
+/////////////////////////////////
+// React Router
+/////////////////////////////////
+const RouterExample = () => (
+	<Router basename="/">
+		<div>
+			<ul>
+				<li><Link to="/">Home</Link></li>
+				<li><Link to="/about">About</Link></li>
+				<li><Link to="/topics">Topics</Link></li>
+			</ul>
+
+			<hr/>
+
+			<Route exact path="/" component={Home}/>
+			<Route path="/about" component={About}/>
+			<Route path="/topics" component={Topics}/>
+		</div>
+	</Router>
+);
+
+const Home = () => (
+	<div>
+		<h2>Home</h2>
+	</div>
+);
+
+const About = () => (
+	<div>
+		<h2>About</h2>
+	</div>
+);
+
+const Topics = ({ match }) => (
+	<div>
+		<h2>Topics</h2>
+		<ul>
+			<li>
+				<Link to={`${match.url}/rendering`}>
+					Rendering with React
+				</Link>
+			</li>
+			<li>
+				<Link to={`${match.url}/components`}>
+					Components
+				</Link>
+			</li>
+			<li>
+				<Link to={`${match.url}/props-v-state`}>
+					Props v. State
+				</Link>
+			</li>
+		</ul>
+
+		<Route path={`${match.url}/:topicId`} component={Topic}/>
+		<Route exact path={match.url} render={() => (
+			<h3>Please select a topic.</h3>
+		)}/>
+	</div>
+);
+
+const Topic = ({ match }) => (
+	<div>
+		<h3>{match.params.topicId}</h3>
+	</div>
+);
+
+ReactDOM.render(
+	RouterExample(),
+	document.getElementById('app0')
+);
 
 /////////////////////////////////
 // JSX 使用数组
