@@ -21,13 +21,13 @@ $ npm install webpack-dev-server
 
 ## npm安装相关依赖，本地模式
 ```sh
+npm install webpack --save
 npm install react react-dom --save
 npm install react-router-dom --save
 npm install material-ui --save
 npm install react-tap-event-plugin --save
 npm install babel-loader babel-core babel-preset-react babel-preset-es2015 --save
-npm install webpack-uglify-js-plugin --save
-npm install webpack --save
+npm install react-redux redux --save
 ```
 
 ## 在package.json文件中，添加scripts部分描述，相当于增加start、build指令
@@ -38,7 +38,8 @@ $ vi package.json
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack-dev-server --hot",
-    "build": "webpack --progress -p"
+    "build": "webpack",
+    "production": "webpack -p"
   },
 ```
 
@@ -59,6 +60,15 @@ $ npm run start
 ```
 
 ---
+## 注意，material-ui 0.18.0版本用webpack打包有问题，建议升级为0.18.1版本，修改```package.json```
+```sh
+"material-ui": "^0.18.1",
+```
+
+## npm使用```package.json```直接安装相关依赖
+```sh
+npm install 
+```
 
 ## webpack调试
 

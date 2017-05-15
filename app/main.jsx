@@ -1,20 +1,56 @@
 // 如果使用webpack，必须取消以下注释
 import React from 'react';
 import ReactDOM from 'react-dom';
+
+// redux simplest demo
+import { createStore } from 'redux';
+
 // 引用material-ui
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import {AppBar, Badge, FlatButton, IconButton, RaisedButton} from 'material-ui';
 import {MuiThemeProvider, getMuiTheme} from 'material-ui/styles';
 import NotificationsIcon from 'material-ui/svg-icons/social/notifications';
 import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
+
 // 引用react router
 import {
 	HashRouter as Router,
 	Route,
 	Link
 } from 'react-router-dom';
+
 // 引用外部包，如果以jsx结尾，必须使用文件全名
 import {CustomButton, CounterButton} from './external.jsx';
+
+/////////////////////////////////
+// redux demo
+/////////////////////////////////
+//reducer
+function counter(state = 0, action) {
+	switch (action.type) {
+		case 'INCREMENT':
+			return state + 1;
+		case 'DECREMENT':
+			return state - 1;
+		default:
+			return state;
+	}
+}
+//store绑定到reducer
+const store = createStore(counter);
+//订阅store的变更事件
+store.subscribe(() =>
+	console.log("# store.state: ", store.getState())
+);
+//向store发送action改变state
+const actionInc = { type: 'INCREMENT' };
+const actionDec = { type: 'DECREMENT' };
+console.log("# store.dispatch(actionInc)");
+store.dispatch(actionInc);
+console.log("# store.dispatch(actionDec)");
+store.dispatch(actionDec);
+console.log("# store.dispatch(actionInc)");
+store.dispatch(actionInc);
 
 /////////////////////////////////
 // Material UI
@@ -23,6 +59,7 @@ injectTapEventPlugin();
 const style = {
 	margin: 12,
 };
+
 
 const MaterialUIDemo = () => (
 	<MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
