@@ -23,7 +23,7 @@ var config = {
 		// 		'NODE_ENV': JSON.stringify('production')
 		// 	}
 		// }),
-		//该插件可以解决material-ui的
+		//该插件可以解决material-ui的minified异常
 		// new webpack.optimize.UglifyJsPlugin({
 		// 	debug: true,
 		// 	minimize: true,

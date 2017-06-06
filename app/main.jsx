@@ -7,10 +7,12 @@ import { createStore } from 'redux';
 
 // 引用material-ui
 import injectTapEventPlugin from 'react-tap-event-plugin';
-import {AppBar, Badge, FlatButton, IconButton, RaisedButton} from 'material-ui';
+import {AppBar, Badge, Checkbox, DatePicker, FlatButton, IconButton, RaisedButton, TimePicker} from 'material-ui';
 import {MuiThemeProvider, getMuiTheme} from 'material-ui/styles';
 import NotificationsIcon from 'material-ui/svg-icons/social/notifications';
 import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
+import Visibility from 'material-ui/svg-icons/action/visibility';
+import VisibilityOff from 'material-ui/svg-icons/action/visibility-off';
 
 // 引用react router
 import {
@@ -100,6 +102,18 @@ const MaterialUIDemo = () => (
 					<NotificationsIcon />
 				</IconButton>
 			</Badge>
+			<br />
+			<br />
+			<Checkbox
+				checkedIcon={<Visibility />}
+				uncheckedIcon={<VisibilityOff />}
+				label="Custom icon of different shapes"
+			/>
+			<DatePicker/>
+			<TimePicker
+				format="24hr"
+				hintText="24hr Format"
+			/>
 		</div>
 	</MuiThemeProvider>
 );

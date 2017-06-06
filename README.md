@@ -11,12 +11,12 @@ $ npm init -y
 
 ## npm安装webpack，全局安装模式
 ```sh
-$ npm install webpack
+$ npm install -g webpack
 ```
 
 ## npm安装webpack-dev-server，本地模式，用于本地测试
 ```sh
-$ npm install webpack-dev-server
+$ npm install -g webpack-dev-server
 ```
 
 ## npm安装相关依赖，本地模式
